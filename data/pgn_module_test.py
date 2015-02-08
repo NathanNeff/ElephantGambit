@@ -1,5 +1,6 @@
 import unittest
 import pgn_module
+import re
 
 class ParseJson(unittest.TestCase):
     json1 = """
@@ -73,6 +74,11 @@ class ParseJson(unittest.TestCase):
         self.assertEqual("e6", pgn_module.moves()[0][1])
         self.assertEqual("Bg2", pgn_module.moves()[1][0])
         self.assertEqual("Nf6", pgn_module.moves()[1][1])
+
+    def testPgn(self):
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertTrue(re.search("1. g3 e6 2. Bg2 Nf6", pgn_module.pgnString()))
+        
 
 if __name__ == "__main__":
     unittest.main()
