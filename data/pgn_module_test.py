@@ -131,6 +131,14 @@ class ParseJson(unittest.TestCase):
         self.assertTrue(re.search("1. g3 e6 2. Bg2 Nf6", pgn_module.pgnString()))
         self.assertIsNone(re.search("4.", pgn_module.pgnString()))
 
+    def testPlyCount(self):
+        
+        pgn_module.parse_lichess_json('{"moves": "g3 e6 Bg2 Nf6"}')
+        self.assertEqual(4, pgn_module.plyCount())
+
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertEqual(7, pgn_module.plyCount())
+
     def testPgnFull(self):
         pgn_module.parse_lichess_json(self.json1)
         self.assertTrue(re.search('\[White "white1"]' , pgn_module.pgnString()))

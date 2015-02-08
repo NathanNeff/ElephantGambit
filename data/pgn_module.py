@@ -30,16 +30,19 @@ def date():
     return pgn.get('Date', "")
 
 def eco():
-    return pgn.get('Eco', "")
+    return pgn.get('ECO', "")
 
 def result():
     return pgn.get('Result', "")
+
+def plyCount():
+    return pgn.get('PlyCount', "")
 
 def fill_pgn(pgn_json):
     pgn['White'] = pgn_json.get('players', {}).get('white', {}).get('userId', '')
     pgn['Black'] = pgn_json.get('players', {}).get('black', {}).get('userId', '')
     pgn['Site'] = pgn_json.get('url', '')
-    pgn['Eco'] = pgn_json.get('opening', {}).get('code', '')
+    pgn['ECO'] = pgn_json.get('opening', {}).get('code', '')
     pgn['Opening'] = pgn_json.get('opening', {}).get('name', '')
     pgn['Date'] = pgn_json.get('timestamp', '')
     if pgn['Date'] != '':
@@ -51,6 +54,14 @@ def fill_pgn(pgn_json):
     for move in moves_iter:
         moves_list.append(move)
     pgn['Moves'] = moves_list
+
+    if moves_list:
+        plyCount = len(moves_list) * 2
+        if moves_list[-1][1] == '':
+            plyCount = plyCount - 1
+
+        pgn['PlyCount'] = plyCount
+
     if pgn_json.get('winner', '') == "white":
         pgn['Result'] = "1-0"
     elif pgn_json.get('winner', '') == "black":
