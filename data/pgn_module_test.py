@@ -154,6 +154,8 @@ class ParseJson(unittest.TestCase):
         self.assertTrue(re.search('\[ECO "A00"]', pgn))
         self.assertTrue(re.search('\[Opening "Hungarian Opening, General"]', pgn))
         self.assertTrue(re.search('\[Annotator "lichess.org"]', pgn))
+        self.assertTrue(re.search('1. g3 e6 2. Bg2', pgn))
+        self.assertTrue(re.search('1-0$', pgn))
 
     def testECO(self):
         ""

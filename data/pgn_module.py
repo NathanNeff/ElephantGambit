@@ -17,6 +17,10 @@ def pgnString():
 
     for idx, val in enumerate(pgn['Moves']):
         pgn_string = pgn_string + str(idx+1) + ". " + val[0] + " " + val[1] + " "
+
+    if result() != '':
+        pgn_string = pgn_string + result()
+
     return pgn_string
 
 def moves():
