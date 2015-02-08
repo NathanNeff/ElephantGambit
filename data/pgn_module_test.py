@@ -124,11 +124,20 @@ class ParseJson(unittest.TestCase):
         self.assertEqual("Nf6", pgn_module.moves()[1][1])
         self.assertEqual("Bxb7", pgn_module.moves()[2][0])
 
-    def testPgn(self):
+    def testPgnMoves(self):
         json1 = '{"moves": "g3 e6 Bg2 Nf6 Bxb7"}'
         pgn_module.parse_lichess_json(json1)
+
         self.assertTrue(re.search("1. g3 e6 2. Bg2 Nf6", pgn_module.pgnString()))
         self.assertIsNone(re.search("4.", pgn_module.pgnString()))
+
+    def testPgnFull(self):
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertTrue(re.search('\[White "white1"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[Black "black1"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[Result "1-0"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[WhiteElo "1489"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[BlackElo "1447"]' , pgn_module.pgnString()))
 
     def testECO(self):
         ""
