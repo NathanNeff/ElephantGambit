@@ -39,6 +39,9 @@ def result():
 def plyCount():
     return pgn.get('PlyCount', "")
 
+def timeControl():
+    return pgn.get('TimeControl', "")
+
 def fill_pgn(pgn_json):
     pgn['White'] = pgn_json.get('players', {}).get('white', {}).get('userId', '')
     pgn['Black'] = pgn_json.get('players', {}).get('black', {}).get('userId', '')
@@ -73,6 +76,13 @@ def fill_pgn(pgn_json):
     pgn['WhiteElo'] = pgn_json.get('players', {}).get('white', {}).get('rating', '')
     pgn['BlackElo'] = pgn_json.get('players', {}).get('black', {}).get('rating', '')
     pgn['Annotator'] = 'lichess.org'
+
+    initial_clock = pgn_json.get('clock', {}).get('initial', '')
+    increment = pgn_json.get('clock', {}).get('increment', '')
+    if initial_clock != '' and increment != '':
+        pgn['TimeControl'] = "%s+%s" % (initial_clock, increment)
+    else:
+        pgn['TimeControl'] = initial_clock
     
 
 def whiteElo():

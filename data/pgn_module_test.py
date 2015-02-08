@@ -172,6 +172,16 @@ class ParseJson(unittest.TestCase):
         pgn_module.parse_lichess_json(self.json1)
         self.assertEqual("Hungarian Opening, General", pgn_module.opening())
 
+    def testTimeControl(self):
+        pgn_module.parse_lichess_json(self.json2)
+        self.assertEqual("180+2", pgn_module.timeControl())
+
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertEqual("0+1", pgn_module.timeControl())
+
+        pgn_module.parse_lichess_json('{"moves": "g3 e6 Bg2 Nf6"}')
+        self.assertEqual("", pgn_module.timeControl())
+
     def testResult(self):
         result_json = '{"winner": "white"}'
         pgn_module.parse_lichess_json(result_json)
