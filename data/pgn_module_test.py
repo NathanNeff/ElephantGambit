@@ -67,17 +67,22 @@ class ParseJson(unittest.TestCase):
         self.assertEqual("2015.02.07", pgn_module.date())
 
     def testMoves(self):
-        pgn_module.parse_lichess_json(self.json1)
+
+        json1 = '{"moves": "g3 e6 Bg2 Nf6 Bxb7"}'
+        pgn_module.parse_lichess_json(json1)
         
-        self.assertEqual(4, len(pgn_module.moves()))
+        self.assertEqual(3, len(pgn_module.moves()))
         self.assertEqual("g3", pgn_module.moves()[0][0])
         self.assertEqual("e6", pgn_module.moves()[0][1])
         self.assertEqual("Bg2", pgn_module.moves()[1][0])
         self.assertEqual("Nf6", pgn_module.moves()[1][1])
+        self.assertEqual("Bxb7", pgn_module.moves()[2][0])
 
     def testPgn(self):
-        pgn_module.parse_lichess_json(self.json1)
+        json1 = '{"moves": "g3 e6 Bg2 Nf6 Bxb7"}'
+        pgn_module.parse_lichess_json(json1)
         self.assertTrue(re.search("1. g3 e6 2. Bg2 Nf6", pgn_module.pgnString()))
+        self.assertIsNone(re.search("4.", pgn_module.pgnString()))
         
 
 if __name__ == "__main__":
