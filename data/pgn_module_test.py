@@ -39,12 +39,59 @@ class ParseJson(unittest.TestCase):
             "winner": "white"
         }"""
 
+    json2 = """
+        {
+                    "clock": {
+                        "increment": 2,
+                        "initial": 180,
+                        "totalTime": 240
+                    },
+                    "id": "IGwZ8ld7",
+                    "perf": "blitz",
+                    "players": {
+                        "black": {
+                            "analysis": {
+                                "blunder": 0,
+                                "inaccuracy": 3,
+                                "mistake": 2
+                            },
+                            "rating": 2452,
+                            "ratingDiff": -9,
+                            "userId": "zuckertort"
+                        },
+                        "white": {
+                            "analysis": {
+                                "blunder": 1,
+                                "inaccuracy": 0,
+                                "mistake": 3
+                            },
+                            "rating": 2160,
+                            "ratingDiff": 7,
+                            "userId": "luis_alfredop"
+                        }
+                    },
+                    "rated": true,
+                    "speed": "blitz",
+                    "status": "draw",
+                    "timestamp": 1422121854198,
+                    "turns": 63,
+                    "url": "http://lichess.org/IGwZ8ld7/black",
+                    "variant": "standard"
+                }
+       """
+
+
+
     def testParseGoodJson(self):
         self.assertTrue(pgn_module.parse_lichess_json(self.json1))
 
-
     def testParseBadJson(self):
         self.assertEqual(None, pgn_module.parse_lichess_json("JUNK"))
+
+    def testAnnotator(self):
+        ""
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertEqual("lichess.org", pgn_module.annotator())
 
     def testSite(self):
         ""
@@ -67,7 +114,6 @@ class ParseJson(unittest.TestCase):
         self.assertEqual("2015.02.07", pgn_module.date())
 
     def testMoves(self):
-
         json1 = '{"moves": "g3 e6 Bg2 Nf6 Bxb7"}'
         pgn_module.parse_lichess_json(json1)
         
@@ -94,7 +140,27 @@ class ParseJson(unittest.TestCase):
 
         pgn_module.parse_lichess_json(eco_json)
         self.assertEqual("A00", pgn_module.eco())
-        
 
+    def testElo(self):
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertEqual(1489, pgn_module.whiteElo())
+        self.assertEqual(1447, pgn_module.blackElo())
+
+    def testOpening(self):
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertEqual("Hungarian Opening, General", pgn_module.opening())
+
+    def testResult(self):
+        result_json = '{"winner": "white"}'
+        pgn_module.parse_lichess_json(result_json)
+        self.assertEqual("1-0", pgn_module.result())
+
+        result_json = '{"winner": "black"}'
+        pgn_module.parse_lichess_json(result_json)
+        self.assertEqual("0-1", pgn_module.result())
+
+        pgn_module.parse_lichess_json(self.json2)
+        self.assertEqual("1/2-1/2", pgn_module.result())
+        
 if __name__ == "__main__":
     unittest.main()

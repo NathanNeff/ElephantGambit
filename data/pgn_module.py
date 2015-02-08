@@ -29,11 +29,15 @@ def date():
 def eco():
     return pgn.get('Eco', "")
 
+def result():
+    return pgn.get('Result', "")
+
 def fill_pgn(pgn_json):
     pgn['White'] = pgn_json.get('players', {}).get('white', {}).get('userId', '')
     pgn['Black'] = pgn_json.get('players', {}).get('black', {}).get('userId', '')
     pgn['Site'] = pgn_json.get('url', '')
     pgn['Eco'] = pgn_json.get('opening', {}).get('code', '')
+    pgn['Opening'] = pgn_json.get('opening', {}).get('name', '')
     pgn['Date'] = pgn_json.get('timestamp', '')
     if pgn['Date'] != '':
         pgn['Date'] = datetime.date.fromtimestamp(int(pgn['Date']) / 1000).strftime("%Y.%m.%d")
@@ -44,6 +48,29 @@ def fill_pgn(pgn_json):
     for move in moves_iter:
         moves_list.append(move)
     pgn['Moves'] = moves_list
+    if pgn_json.get('winner', '') == "white":
+        pgn['Result'] = "1-0"
+    elif pgn_json.get('winner', '') == "black":
+        pgn['Result'] = "0-1"
+    elif pgn_json.get('status', '') == "draw":
+        pgn['Result'] = "1/2-1/2"
+
+    pgn['WhiteElo'] = pgn_json.get('players', {}).get('white', {}).get('rating', '')
+    pgn['BlackElo'] = pgn_json.get('players', {}).get('black', {}).get('rating', '')
+    pgn['Annotator'] = 'lichess.org'
+    
+
+def whiteElo():
+    return pgn.get('WhiteElo', '')
+
+def blackElo():
+    return pgn.get('BlackElo', '')
+
+def opening():
+    return pgn.get('Opening', '')
+
+def annotator():
+    return pgn.get('Annotator', '')
 
 def parse_lichess_json(json_text):
     try:
