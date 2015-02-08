@@ -1,6 +1,7 @@
 import json
 import datetime
 import itertools
+import sys
 
 pgn = {}
 
@@ -115,13 +116,19 @@ def event():
     return pgn.get('Event', '')
 
 def parse_lichess_json(json_text):
-    try:
-        pgn_json = json.loads(json_text)
+    
+    json_object = None
+    if type(json_text) is dict:
+        json_object = json_text
+    else:
+        try:
+            json_object = json.loads(json_text)
 
-    except ValueError as e:
-        return None
+        except ValueError as e:
+            return None
 
-    fill_pgn(pgn_json)
+    fill_pgn(json_object)
+
     return True
 
 
