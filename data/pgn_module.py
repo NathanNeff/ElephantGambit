@@ -26,14 +26,17 @@ def site():
 def date():
     return pgn.get('Date', "")
 
+def eco():
+    return pgn.get('Eco', "")
+
 def fill_pgn(pgn_json):
     pgn['White'] = pgn_json.get('players', {}).get('white', {}).get('userId', '')
     pgn['Black'] = pgn_json.get('players', {}).get('black', {}).get('userId', '')
     pgn['Site'] = pgn_json.get('url', '')
+    pgn['Eco'] = pgn_json.get('opening', {}).get('code', '')
     pgn['Date'] = pgn_json.get('timestamp', '')
     if pgn['Date'] != '':
         pgn['Date'] = datetime.date.fromtimestamp(int(pgn['Date']) / 1000).strftime("%Y.%m.%d")
-
 
     l = pgn_json['moves'].split()
     moves_iter  = itertools.izip_longest(fillvalue="", *[iter(l)] * 2)

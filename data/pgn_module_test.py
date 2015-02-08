@@ -83,6 +83,18 @@ class ParseJson(unittest.TestCase):
         pgn_module.parse_lichess_json(json1)
         self.assertTrue(re.search("1. g3 e6 2. Bg2 Nf6", pgn_module.pgnString()))
         self.assertIsNone(re.search("4.", pgn_module.pgnString()))
+
+    def testECO(self):
+        ""
+        eco_json = """{
+            "moves": "g3 e6 Bg2 Nf6 Bxb7"},
+            "opening": {
+                "code": "A00",
+                "name": "Hungarian Opening, General"
+            }}"""
+
+        pgn_module.parse_lichess_json(eco_json)
+        self.assertEqual("A00", pgn_module.eco())
         
 
 if __name__ == "__main__":
