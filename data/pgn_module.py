@@ -6,7 +6,8 @@ pgn = {}
 
 def pgnString():
     pgn_string = ""
-    for k in ['White', 'Black', 'Result', 'WhiteElo', 'BlackElo']:
+    for k in ['Date', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 'ECO', 'Opening',
+              'Annotator']:
         pgn_string = pgn_string + "[%s \"%s\"]\n" % (k, str(pgn.get(k, '')))
 
     for idx, val in enumerate(pgn['Moves']):

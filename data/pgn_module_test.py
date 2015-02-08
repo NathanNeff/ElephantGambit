@@ -141,11 +141,15 @@ class ParseJson(unittest.TestCase):
 
     def testPgnFull(self):
         pgn_module.parse_lichess_json(self.json1)
+        self.assertTrue(re.search('\[Date "2015.02.07"]' , pgn_module.pgnString()))
         self.assertTrue(re.search('\[White "white1"]' , pgn_module.pgnString()))
         self.assertTrue(re.search('\[Black "black1"]' , pgn_module.pgnString()))
         self.assertTrue(re.search('\[Result "1-0"]' , pgn_module.pgnString()))
         self.assertTrue(re.search('\[WhiteElo "1489"]' , pgn_module.pgnString()))
         self.assertTrue(re.search('\[BlackElo "1447"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[ECO "A00"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[Opening "Hungarian Opening, General"]' , pgn_module.pgnString()))
+        self.assertTrue(re.search('\[Annotator "lichess.org"]' , pgn_module.pgnString()))
 
     def testECO(self):
         ""
@@ -178,6 +182,6 @@ class ParseJson(unittest.TestCase):
 
         pgn_module.parse_lichess_json(self.json2)
         self.assertEqual("1/2-1/2", pgn_module.result())
-        
+
 if __name__ == "__main__":
     unittest.main()
