@@ -87,7 +87,6 @@ class ParseJson(unittest.TestCase):
     def testECO(self):
         ""
         eco_json = """{
-            "moves": "g3 e6 Bg2 Nf6 Bxb7"},
             "opening": {
                 "code": "A00",
                 "name": "Hungarian Opening, General"

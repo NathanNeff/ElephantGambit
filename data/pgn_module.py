@@ -38,7 +38,7 @@ def fill_pgn(pgn_json):
     if pgn['Date'] != '':
         pgn['Date'] = datetime.date.fromtimestamp(int(pgn['Date']) / 1000).strftime("%Y.%m.%d")
 
-    l = pgn_json['moves'].split()
+    l = pgn_json.get('moves', '').split()
     moves_iter  = itertools.izip_longest(fillvalue="", *[iter(l)] * 2)
     moves_list = []
     for move in moves_iter:
