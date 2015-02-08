@@ -6,9 +6,14 @@ pgn = {}
 
 def pgnString():
     pgn_string = ""
-    for k in ['Date', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 'ECO', 'Opening',
-              'Annotator']:
-        pgn_string = pgn_string + "[%s \"%s\"]\n" % (k, str(pgn.get(k, '')))
+    for k in ['Event', 'Site', 'Date', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 
+              'TimeControl', 'ECO', 'Opening', 'Annotator']:
+        try:
+            pgn_string = pgn_string + "[%s \"%s\"]\n" % (k, str(pgn.get(k, '')))
+        except UnicodeEncodeError as e:
+            sys.stderr.write("Error with this:  " + pgn.get(k, ''))
+            return ''
+
 
     for idx, val in enumerate(pgn['Moves']):
         pgn_string = pgn_string + str(idx+1) + ". " + val[0] + " " + val[1] + " "
@@ -83,6 +88,11 @@ def fill_pgn(pgn_json):
         pgn['TimeControl'] = "%s+%s" % (initial_clock, increment)
     else:
         pgn['TimeControl'] = initial_clock
+
+    if pgn_json.get('rated', '') == True:
+        pgn['Event'] = "Rated game"
+    else:
+        pgn['Event'] = "Rated game"
     
 
 def whiteElo():
@@ -96,6 +106,9 @@ def opening():
 
 def annotator():
     return pgn.get('Annotator', '')
+
+def event():
+    return pgn.get('Event', '')
 
 def parse_lichess_json(json_text):
     try:

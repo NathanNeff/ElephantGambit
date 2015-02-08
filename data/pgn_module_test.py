@@ -142,12 +142,15 @@ class ParseJson(unittest.TestCase):
     def testPgnFull(self):
         pgn_module.parse_lichess_json(self.json1)
         pgn = pgn_module.pgnString()
+        self.assertTrue(re.match('\[Event "Rated game"]', pgn))
+        self.assertTrue(re.search('\[Site "http://lichess.org/viICO7M5/white"]', pgn))
         self.assertTrue(re.search('\[Date "2015.02.07"]', pgn))
         self.assertTrue(re.search('\[White "white1"]', pgn))
         self.assertTrue(re.search('\[Black "black1"]', pgn))
         self.assertTrue(re.search('\[Result "1-0"]', pgn))
         self.assertTrue(re.search('\[WhiteElo "1489"]', pgn))
         self.assertTrue(re.search('\[BlackElo "1447"]', pgn))
+        self.assertTrue(re.search('\[TimeControl "0\+1"]', pgn))
         self.assertTrue(re.search('\[ECO "A00"]', pgn))
         self.assertTrue(re.search('\[Opening "Hungarian Opening, General"]', pgn))
         self.assertTrue(re.search('\[Annotator "lichess.org"]', pgn))
@@ -181,6 +184,11 @@ class ParseJson(unittest.TestCase):
 
         pgn_module.parse_lichess_json('{"moves": "g3 e6 Bg2 Nf6"}')
         self.assertEqual("", pgn_module.timeControl())
+
+    def testEvent(self):
+        result_json = '{"winner": "white"}'
+        pgn_module.parse_lichess_json(result_json)
+        self.assertEqual("Rated game", pgn_module.event())
 
     def testResult(self):
         result_json = '{"winner": "white"}'
