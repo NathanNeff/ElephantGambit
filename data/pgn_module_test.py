@@ -60,5 +60,10 @@ class ParseJson(unittest.TestCase):
         pgn_module.parse_lichess_json(self.json1)
         self.assertEqual("black1", pgn_module.black())
 
+    def testDate(self):
+        ""
+        pgn_module.parse_lichess_json(self.json1)
+        self.assertEqual("2015.02.07", pgn_module.date())
+
 if __name__ == "__main__":
     unittest.main()
