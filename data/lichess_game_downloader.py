@@ -16,9 +16,16 @@ stop = False
 
 class LichessDownloader():
 
-    def __init__(self):
+    def __init__(self, maxTime=60):
         ""
         self.games = {}
+        
+    # Allow easy mocking of this method for testing
+    def getNow(self):
+        return time.time()
+
+    def getRunningTime(self):
+        return self.getNow() - self.start_time
         
     def gameCount(self):
         return len(self.games)
@@ -70,6 +77,8 @@ class LichessDownloader():
             print req.content
             stop = True
 
+    def time_elapsed(self):
+
     def begin_import():
         while keep_importing():
             get_game_info_from_request()
@@ -77,8 +86,7 @@ class LichessDownloader():
                 sys.stderr.write("Sleeping %d\n" % i)
                 time.sleep(1)
 
-    def keep_importing():
-        program_run_time = time.time() - start_time
+    def keep_importing(self):
         global games_imported
         games_imported = len(imported_games.keys())
         return stop == False and program_run_time < max_time and games_imported < max_games and list_requests < max_list_requests
