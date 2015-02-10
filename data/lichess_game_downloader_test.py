@@ -23,14 +23,20 @@ class TestSomething(unittest.TestCase):
         c.addGame("2")
         self.assertEquals(2, c.gameCount())
 
-    def testTimeElapsed(self):
+    def testMaxTimeTriggered(self):
+        c = lichess_game_downloader.LichessDownloader(maxTime=0.000001)
+        self.assertTrue(c.maxTimeTriggered())
+
+        c = lichess_game_downloader.LichessDownloader(maxTime=100)
+        self.assertFalse(c.maxTimeTriggered())
+
+    def testMaxRequestsTriggered(self):
         # An exercise in mocking!
         # http://stackoverflow.com/questions/23988853/how-to-mock-set-system-date-in-pytest
-        elapsed_seconds = 10
-        with mock.patch('lichess_game_downloader.LichessDownloader.getNow', return_value=time.time() - elapsed_seconds):
+        with mock.patch('lichess_game_downloader.LichessDownloader.getNumRequests', return_value=2):
             ""
-            c = lichess_game_downloader.LichessDownloader(maxTime=10)
-            self.assertTrue(c.time_elapsed())
+            c = lichess_game_downloader.LichessDownloader(maxRequests=2)
+
 
 
 if __name__ == "__main__":
