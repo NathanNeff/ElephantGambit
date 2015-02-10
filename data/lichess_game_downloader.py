@@ -22,6 +22,7 @@ class LichessDownloader():
         self.start_time = time.time()
         self.maxTime = time.time() + maxTime
         self.maxRequests = maxRequests
+        self.num_requests = 0
         
     # Allow easy mocking of this method for testing
     def getNow(self):
@@ -95,11 +96,14 @@ class LichessDownloader():
         games_imported = len(imported_games.keys())
         return stop == False and program_run_time < max_time and games_imported < max_games and list_requests < max_list_requests
 
-    def getNumRequests():
-        return self.list_requests
-
+    def numRequests(self):
+        return self.num_requests
+        
     def maxRequestsTriggered(self):
-        return self.maxRequests >= self.getNumRequests()
+        return self.numRequests() >= self.maxRequests
+
+    def getNumGamesImported(self):
+        return self.gamesImported
 
 if __name__ == "__main__":
     begin_import()
