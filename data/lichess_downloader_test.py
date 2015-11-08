@@ -12,3 +12,11 @@ class LichessDownloaderTest(unittest.TestCase):
 
         ld = lichess_downloader.LichessDownloader()
         self.assertEquals(0, ld.maxTime)
+
+    def testStopTimeTriggered(self):
+        c = lichess_downloader.LichessDownloader(maxTime=0.00001)
+        sleep(0.001)
+        self.assertTrue(c.stopTimeTriggered())
+
+        c = lichess_downloader.LichessDownloader(maxTime=100)
+        self.assertFalse(c.stopTimemeTriggered())
