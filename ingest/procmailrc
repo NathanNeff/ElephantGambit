@@ -1,0 +1,11 @@
+:0
+*^content-Type:
+{
+	METAMAIL_TMPDIR=$HOME/attachments
+	:0c:
+	$HOME/mail_backup
+
+	:0fw 
+	| uudeview -a -p $METAMAIL_TMPDIR -
+
+}
