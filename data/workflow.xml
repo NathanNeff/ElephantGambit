@@ -1,0 +1,16 @@
+
+<workflow-app name="LichessSquish" xmlns="uri:oozie:workflow:0.4">
+    <start to="MoveToForProcessing"/>
+    <action name="MoveToForProcessing">
+        <fs>
+              <move source='${nameNode}/ElephantGambit/raw_json/*json' 
+              target='${nameNode}/ElephantGambit/for_compressing'/>
+        </fs>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
